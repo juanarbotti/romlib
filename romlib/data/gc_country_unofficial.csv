@@ -1,0 +1,58 @@
+tag,re_tag,country,country_spa,preferred
+(Ar),\(Ar\),Argentina,Argentina,True
+(Argentina),\(Argentina\),Argentina,Argentina,False
+(As),\(As\),Asia,Asia,True
+(Asia),\(Asia\),Asia,Asia,False
+(Australia),\(Australia\),Australia,Australia,False
+(Au),\(Au\),Australia,Australia,True
+(Brazil),\(Brazil\),Brazil,Brasil,False
+(Br),\(Br\),Brazil,Brasil,True
+(Canada),\(Canada\),Canada,Canada,False
+(Ca),\(Ca\),Canada,Canada,True
+(China),\(China\),China,China,False
+(Ch),\(Ch\),China,China,False
+(Chi),\(Chi\),China,China,False
+(Cn),\(Cn\),China,China,True
+(Denmark),\(Denmark\),Denmark,Dinamarca,False
+(Dk),\(Dk\),Denmark,Dinamarca,False
+(Europe),\(Europe\),Europe,Europa,False
+(Eu),\(Eu\),Europe,Europa,True
+(France),\(France\),France,Europa,False
+(Fr),\(Fr\),France,Europa,True
+(Finland),\(Finland\),Finland,Europa,False
+(FN),\(FN\),Finland,Europa,False
+(Fi),\(Fi\),Finland,Europa,True
+(Germany),\(Germany\),Germany,Alemania,False
+(Ge),\(Ge\),Germany,Alemania,False
+(De),\(De\),Germany,Alemania,True
+(Greece),\(Greece\),Greece,Grecia,False
+(Gr),\(Gr\),Greece,Grecia,False
+(Hong Kong),\(Hong Kong\),Hong Kong,Hong Kong,False
+(Italy),\(Italy\),Italy,Italia,False
+(It),\(It\),Italy,Italia,True
+(Japan),\(Japan\),Japan,Japón,False
+(Jp),\(Jp\),Japan,Japón,True
+(Korea),\(Korea\),Korea,Korea,False
+(Kr),\(Kr\),Korea,Korea,True
+(Mexico),\(Mexico\),Mexico,México,False
+(Mx),\(Mx\),Mexico,México,False
+(Netherlands),\(Netherlands\),Netherlands,Paises Bajos,False
+(Nl),\(Nl\),Netherlands,Paises Bajos,True
+(New Zeland),\(New Zeland\),New Zeland,Nueva Zelandia,False
+(NZ),\(NZ\),New Zeland,Nueva Zelandia,False
+(Portugal),\(Portugal\),Portugal,Portugal,False
+(Pt),\(Pt\),Portugal,Portugal,True
+(Russia),\(Russia\),Russia,Rusia,False
+(Ru),\(Ru\),Russia,Rusia,True
+(Spain),\(Spain\),Spain,España,False
+(Es),\(Es\),Spain,España,True
+(Sweeden),\(Sweeden\),Sweeden,Suecia,False
+(Se),\(Se\),Sweeden,Suecia,True
+(Taiwan),\(Taiwan\),Taiwan,Taiwan,False
+(Tw),\(Tw\),Taiwan,Taiwan,False
+(USA),\(USA\),USA,USA,False
+(US),\(US\),USA,USA,True
+(United Kingdom),\(United Kingdom\),United Kingdom,Reino Unido,False
+(Unknown),\(Unknown\),Unknown country,País desconocido,False
+(World),\(World\),World,Mundo,False
+(Wo),\(Wo\),World,Mundo,True

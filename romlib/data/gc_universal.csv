@@ -1,0 +1,46 @@
+tag,re_tag,short_desc,short_desc_spa,long_desc
+(NG-Dump Known),\(NG\-Dump\sKnown\),No good dump,Volcado malo,No good dump has been found
+(REVXX),\(REV[0-9]{2}\),Revision,Revisión,Revision number (00 is earliest)
+(VX.X),\(V[1-9][0-9]?\.[0-9]\),Version,Versión,Version number (1.0 is earliest)
+??-in-1,"[2-9][0-9]{0,7}\-in\-1",Multicart (pirate),Multicartucho pirata,Pirate multicart
+(Vol #),"\(Vol [1-9][0-9]{0,2}\)",Official multicart,Multicartucho original,Official multicart
+(GCN),\(GCN\),GC rip,GameCube rip,GameCube rip
+[h#C],\[h[1-9][0-9]?C\],Hacked,Hackeado,Hacked internal cartridge information
+[h#+#C],"\[h[0-9]{1,2}\+[0-9]{1,2}C\]",Hacked,Hackeado,Hacked internal cartridge information #th variant
+[hI],\[hI\],hacked,Hackeado,Hacked dumping group intro
+[hIR],\[hIR\],hacked,Hackeado,Hacked dumping group intro removed
+[M],\[M\],Mono-color,Mono-color,Mono-color game
+(Alpha),"\(Alpha ?[0-9]{0,2}\)",Alpha,Alfa,Alpha version
+(Beta),"\(Beta ?[0-9]{0,2}\)",Beta,Beta,Beta version
+(Prototype),"\(Prototype(?:\s-\s[\w\s,\.]+)?\)",Prototype,Prototipo,Prototype version
+(Pre-Release),\(Pre\-Release\),Pre-release,Pre-lanzamiento,Pre-release version
+(Kiosk Demo),\(Kiosk\sDemo\),Demostration,Demostración,Demonstration version available at Kiosks
+(Hack),\([^\(\)]*Hack\),Hack,Hack,ROM hack
+(Menu),\(Menu\),Multicart uniselectable,Multicartucho no seleccionable,"Multicart menu, unselectable options"
+ZZZ_UNK,ZZZ_UNK,Unclassified,Sin clasificar,Unclassified ROM
+BIOS,BIOS,BIOS,BIOS,Copy of console's basic in/out system
+(N64DD),\(N64DD\),N64DD ROM,ROM de N64DD,Nintendo 64DD ROM
+(##MBit),"\(\d{1,3}MBit\)",ROM size in MB,Tamaño de ROM en MB,ROM size in megabits
+(##k),"\(\d{1,10000}k\)",ROM size in KB,Tamaño de ROM en KB,ROM size in kilobits
+(19XX),\(19\d{2}\),Release year,Año de lanzamiento,Release year (20th Century)
+(20XX),\(20\d{2}\),Release year,Año de lanzamiento,Release year (21st Century)
+(Atmos),\(Atmos\),Atmos ROM,ROM Atmos,Atmos ROM (GoodOric only)
+(Telestrat),\(Telestrat\),Telestrat ROM,ROM Telestrat,Telestrat ROM (GoodOric only)
+[R],\[R\],RSID format,Formato RSID,RSID format (GoodPSID only)
+(Old),\(Old\),Old version,Versión antigua,Old version
+[R-XXX],"\[R-[A-Za-z]{2,3}\]",Language,Lenguaje,Language
+(SC-3000),\(SC\-3000\),SC-3000 cart,Cartucho SC-3000,SC-3000 cartridge (GoodSMS only)
+(SG-1000),\(SG\-1000\),SC-1000 cart,Cartucho SC-1000,SG-1000 cartridge (GoodSMS only)
+(SF-7000),\(SF\-7000\),SF-7000 cart,Cartucho SC-7000,SF-7000 cartridge (GoodSMS only)
+(GG2SMS),\(GG2SMS\),SMS mode,Modo SMS,Master System mode (GoodSMS only)
+(MSX2SMS),\(MSX2SMS\),MSX Converted,MSX convertido,MSX Converted to SG-1000/SG-1000 II/Master System (GoodSMS only) (GoodSMS V3.23 update)
+(SG2GG),\(SG2GG\),SG-1000/3000 to GG,SG-1000/3000 a GG,SG-1000/SC-3000 to Game Gear (GoodGG only) (GoodGG V3.23 update)
+(Cart),\([A-Za-z-]*Cart\),Cartridge format,Formato de cartucho,Cartridge format
+(Adam),\(Adam\),ADAM version,Versión ADAM,ADAM version (GoodCol only)
+(Compilation),\(Compilation\),Dump compilation,Volcado de compilación,The ROM is a dump of a compilation
+(Ch-Trad),\(Ch\-Trad\),Pirate traditional Chinese,Pirata de chino tradicional,Pirate traditional Chinese game
+(Ch-Simple),\(Ch\-Simple\),Pirate simple Chinese,Pirata de chino simple,Pirate simple Chinese game
+[f1C],\[f1C\],Name changed only (hack),Nombre cambiado solamente (hack),"Hack, only cart name is changed"
+(PAL),\(PAL\),PAL region,Región PAL,"PAL regions (Australia, Europe)"
+(NTSC),\(NTSC\),NTSC region,Región NTSC,"NTSC regions (Japan, USA, Latin America)"
+(RU),\(RU\),Soviet Union Dendy’s region,Región de Dendy de Unión Soviética,Dendy regions (Soviet Union) (GoodNES only) (GoodNES V3.35 update)

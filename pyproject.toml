@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ROMLib"
+version = "0.1"
+description = "Librería para gestionar ROMs"
+authors = [{name = "Juan Arbotti"}]
+dependencies = []

@@ -1,0 +1,15 @@
+# Ignorar archivos de entorno y configuraciones locales
+venv/
+*.log
+config.json
+
+# Ignorar caché de Python
+__pycache__/
+*.pyc
+
+# Ignorar carpetas de IDEs como VSCode y JetBrains
+.vscode/
+
+# Proopios
+tests/
+run.py

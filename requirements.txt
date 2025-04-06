@@ -1,0 +1,15 @@
+Brotli==1.1.0
+inflate64==1.0.1
+iniconfig==2.1.0
+multivolumefile==0.2.3
+packaging==24.2
+pluggy==1.5.0
+psutil==7.0.0
+py7zr==0.22.0
+pybcj==1.0.3
+pycryptodomex==3.22.0
+pyppmd==1.1.1
+pytest==8.3.5
+pyzstd==0.16.2
+texttable==1.7.0
+wcwidth==0.2.13

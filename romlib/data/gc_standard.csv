@@ -1,0 +1,15 @@
+tag,re_tag,short_desc,short_desc_spa,long_desc
+[a],"\[a(\d{1,2})\]",Alternate,Alternativo,"This is simply an alternate version of a ROM. Many games have been re-released to fix bugs or even to eliminate Game Genie codes (Yes, Nintendo hates that device)."
+[b],"\[b(\d{1,2})\]",Bad Dump,Volcado malo,A bad dump often occurs with an older game or a faulty dumper (bad connection). Another common source of [b] ROMs is a corrupted upload to a release FTP.
+[f],\[f\],Fixed,Reparado,A fixed game has been altered in some way so that it will run better on a copier or emulator.
+[h],"\[h(\d{1,2})\]",Hack,Hack,"Something in this ROM is not quite as it should be. Often a hacked ROM simply has a changed header or has been enabled to run in different regions. Other times it could be a release group intro, or just some kind of cheating or funny hack."
+[o],\[o\],Overdump,Sobrevolcado,An overdumped ROM image has more data than is actually in the cart. The extra information means nothing and is removed from the true image.
+[p],"\[p(\d{1,2})\]",Pirate,Pirata,
+[t],"\[t(\d{1,2})\]",Trained,Entrenado,A trainer is special code which executes before the game is begun. It allows you to access cheats from a menu.
+[T-],"\[T\-([a-zA-Z0-9.?!_]{1,20})\]",OldTranslation,Traducción vieja,
+[T+],"\[T\+([a-zA-Z0-9.?!_]{1,20})\]",NewerTranslation,Traducción nueva,
+[!],\[!\],Verified Good Dump,Volcado correcto verificado,Verified good dump. Thank God for these!
+[!p],\[!p\],Pending Dump,Pendiente volcado,
+(M),"\(M(\d{1,2})\)",Multilanguage,Multilenguaje,M# of Languages
+(k),"\((\d{1,5})\)",ROM Size,Tamaño de ROM,
+(Unl),\(Unl\),Unlicensed,Sin licencia,

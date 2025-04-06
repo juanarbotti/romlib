@@ -1,0 +1,16 @@
+tag,re_tag,short_desc,short_desc_spa,long_desc
+(1),\(1\),Japanese and Korean machines,Maquinas Japonesas y Coreanas,Japan & Korea (GoodGen v0.999.7 only) Carts with this code will run on both Japanese and Korean machines.
+(4),\(4\),USA and Brazil NTSC machiens,Maquinas de USA y Brazil,"USA & Brazil (GoodGen v0.999.7 only) While this code is technically the same as a (U) code, it is a newer header format and represents that the cart will run on USA and Brazil NTSC machines."
+(5),\(5\),NTSC,NTSC,NTSC (GoodGen 0.999.7 only)
+(8),\(8\),PAL,PAL,PAL (GoodGen 0.999.7 only)
+(F),\(F\),World,Mundo,World (GoodGen v0.999.7 only)
+(B),\(B\),Non-USA,No USA,Non-USA (GoodGen v0.999.7 only)
+[c],\[c\],"Bad checksum, good dump","Checksum malo, volcado bueno",Known bad checksum but good dump
+[x],\[x\],Probably bad checksum,Checksum malo probable,Thought to have a bad checksum
+(J-Cart),\(J\-Cart\),2 controller ports built-in,2 puertos de controles integrados,The original cartridge has two controller ports on it
+(SN),\(SN\),Sega-Net game,Juego Sega-Net,Sega-Net game
+(REVXB),\(REVXB\),Sonic the Hedgehog Japanese version 2,Version 2 Japonesa de Sonic the Hedgehog,Sonic the Hedgehog Japanese version 2
+(REVSC02),\(REVSC02\),Sonic Compilation version of Sonic 2,Versión de compilación de Sonic 2,Sonic Compilation version of Sonic 2
+(MP),\(MP\),MegaPlay version,Version MegaPlay,MegaPlay version
+(MD Bundle),\(MD\ Bundle\),Pack-in game,Juego pack-In,The ROM comes from Sega Mega Drive/Genesis pack-in game
+(Alt Music),\(Alt\ Music\),Alternative music,Musica alternativa,Alternative music version of Sonic Spinball 
