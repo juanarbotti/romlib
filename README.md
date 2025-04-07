@@ -216,7 +216,7 @@ Los valores de pretty_data pueden tener el formato str o int. En casos en que no
 ### ROM_SMD
 El proceso de carga de una ROM de Mega Drive es bastante simple, ya que los datos presentan poca variabilidad y se trata de un volcado 'bruto' de un hardware que no posee mucha complejidad adicional (diferente a lo que ocurre con las ROMs de NES).
 
-#### .pretty_data
+#### *.pretty_data*
 Valores de *pretty_data* para la clase ROM_SMD:
 |Clave|Valor|Valores posibles|
 |-----|-----|---------------|
@@ -242,7 +242,7 @@ Valores de *pretty_data* para la clase ROM_SMD:
 |*extra_memory_size*|Informa el tamaño en KB de SRAM disponible. Solo estará disponible si "extra_memory_type" es 'SRAM'.| *Variable*|
 
 ### ROM_SMS
-#### .pretty_data
+#### *.pretty_data*
 Valores de *pretty_data* para la clase ROM_SMD:
 |Clave|Valor|Valores posibles|
 |-----|-----|---------------|
@@ -261,16 +261,16 @@ Valores de *pretty_data* para la clase ROM_SMD:
 |*cm_checksum*|Checksum de Codemasters.|*Variable*|
 |*cm_inverse_checksum*|Checksum inverso de Codemasters.|*Variable*|
 
-#### .header_position
+#### *.header_position*
 Devuelve en notación hexadecimal la posición del header estandar de Sega en formato string.
 
-#### .raw_data_codemasters
+#### *.raw_data_codemasters*
 Esta propiedad devuelve los bytes en bruto del header de Codemasters, si está presente.
 
 ### ROM_NES
 Esta clase detecta automáticamente si una ROM está en formato iNES (el mas antigüo y más usado) o si se encuentra en NES 2.0 (mejor compatibilidad con emuladores y programas de análisis). El header de NES 2.0, además de extender la información suministrada, presenta algunas diferencias con el de iNES, y por lo tanto, las claves informadas en .pretty_data.
 
-#### .pretty_data
+#### *.pretty_data*
 Valores de *pretty_data* para la clase ROM_NES:
 
 |Clave|Valor|Valores posibles|
@@ -307,7 +307,7 @@ Valores de *pretty_data* para la clase ROM_NES:
 ### ROM_SNES
 Esta clase es la más compleja, debido a que las ROMs de SNES presentan el encabezado en posición variable, dependiendo de si presentan o no una cabecera del volcador (dumper's header), si son de tipo LoROM, HiROM o ExHiROM.
 
-#### .pretty_data
+#### *.pretty_data*
 Valores de *pretty_data* para la clase ROM_SNES:
 
 |Clave|Valor|Valores posibles|
@@ -325,22 +325,118 @@ Valores de *pretty_data* para la clase ROM_SNES:
 |mask_rom_version|Máscara del número de revisión. Denota el número de revisión de la ROM.|*Variable*|
 |checksum_complement|Valor del complemento de checksum|*Variable*|
 |checksum|Valor del checksum|*Variable*|
-|*maker_code*|Proviene del header expandido. Código del fabricante, asignado por Nintendo.|*Variable*|
-|game_code|Código del juego.|*Variable*|
-|expansion_ram_size|Tamaño de la RAM expandida, si está presente.|*Uno de* .EXPANSION_RAM|
-|special_version|Si es una versión especial o regular.|*Uno de* "yes", "no"|
-|cartridge_subnumber|Número de cartucho. Normalmente cero. Solo necesario para juegos que usan el mismo cartucho.|*Variable*|
+|*maker_code\**|Proviene del header expandido. Código del fabricante, asignado por Nintendo.|*Variable*|
+|*game_code\**|Código del juego.|*Variable*|
+|*expansion_ram_size\**|Tamaño de la RAM expandida, si está presente.|*Uno de* .EXPANSION_RAM|
+|*special_version\**|Si es una versión especial o regular.|*Uno de* "yes", "no"|
+|*cartridge_subnumber\**|Número de cartucho. Normalmente cero. Solo necesario para juegos que usan el mismo cartucho.|*Variable*|
+
+\* solo se muestran si el expanded header está presente.
 
 ## 🛠️ Módulo *tags*
-Documentación pendiente de confeccionar.
+
+### Tags
+El módulo tags contiene la clase **Tags** que permite escanear y detectar los tags definidos y empleados por *GoodTools (GoodSets)*, que es una herramienta para la gestión de ROMs para Windows. También posee un método capaz de 'limpiar' el nombre del archivo y devolverlo lo más original posible. Aunque puede trabajar con rutas, se recomienda usarlo con nombres de archivos con o sin extensión.
+
+#### .load()
+Este método permite cargar una string correspondiente a un nombre de archivo, con o sin su extensión. Al cargarla, es inmediatamente analizada y su resultado cargado en memoria.
+- **filename** (str): el nombre de archvo o cadena a analizar.
+- **rom_type** (str): si se define como none (valor por defecto), analizará todos los sets de tags posibles. Si se le especifica un tipo (valores posibles: "SMD", "SMS", "SNES", "NES") evitará analizar aquellos que no correspondan.
+
+#### .clear()
+Descarga la string analizada y limpia todas sus variables.
+
+#### *.fullname*
+Devuelve la string tal cuál fue cargada con su ruta.
+
+#### *.rom_name*
+Devuelve una string con el nombre del archivo 'limpio', es decir, sin tags ni extensiones.
+
+#### *.gc_all*
+Devuelve una lista de diccionarios de todos los tags hallados para la cadena evaluada, sin clasificaciones.
+
+#### *.gc_all_json*
+Devuelve una lista de todo los tags hallados para la cadena evaluada en formato *json*, en sus respectivas categorías.
+
+#### *.gc_standard, .gc_universal, .gc_nes, .gc_snes, .gc_genesis*
+* **.gc_standard**: Devuelve una lista de diccionarios de los tags hallados para la categoría de **tags estándar**.
+* **.gc_universal**: Devuelve una lista de diccionarios de los tags hallados para la categoría **tags universales**.
+* **.gc_nes, .gc_snes, .gc_genesis**: Devuelve una lista de diccionarios con los tags hallados específicamente para el sistema en cuestión (NES, SNES, MegaDrive/Genesis respectivamente). No hay códigos especiales para *Master System*.
+
+Todas estas propiedades devuelven una lista de diccionarios con las siguientes claves:
+```
+[
+    {
+        "tag": <tag reconocido>,
+        "value": <valor, si corresponde>,
+        "short_desc": <descripción corta del tag hallado, en inglés>,
+        "short_desc_spa": <descripcion corta del tag hallado, español>,
+        "extra_data": <información adicional>,
+        "raw_detection": <tag extraído de la string sin procesar>
+    },
+    ...
+]
+```
+
+Por ejemplo, para **"[T+Eng2b_DackR]"**, el parseado devuelve:
+```python
+[
+    {
+        "tag": "[T+]",
+        "value": "Eng",
+        "short_desc": "NewerTranslation",
+        "short_desc_spa": "Traducción nueva",
+        "extra_data": "2b_DackR"
+        "raw_detection": "[T+Eng2b_DackR]"
+    }
+]
+```
+Los campos son fijos y se rellenan con *None* en caso de no poseer un valor.
+
+
+#### *.gc_country, .gc_country_unofficial*
+* **.gc_country**: Devuelve los tags oficiales que identifican la región del juego, especificados en la categoría **región** de *GoodTools*.
+* **.gc_country_unofficial**: Devuelve una lista de diccionarios de los tags de identificación de **región** que no son oficiales de *GoodTools*.
+
+Todas estas propiedades devuelven una lista de diccionarios con las siguientes claves:
+```
+[
+    {
+        "tag": <tag reconocido>,
+        "country": <país o región en inglés>,
+        "country_spa": <país o región, en español>,
+        "preferred": <para los 'unofficial' tags, si es preferido su uso.>,
+        "raw_detection": <tag extraído de la string sin procesar>
+    },
+    ...
+]
+```
+
+Por ejemplo, para **"[JUE]"**, el parseado devuelve:
+```python
+[
+    {
+        "tag": "[JUE]",
+        "country": "Japan, USA, Europe",
+        "country_spa": "Japón, USA, Europa",
+        "preferred": "not apply",
+        "raw_detection": "[JUE]"
+    }
+]
+```
+
+#### *.gc_ ... _json*
+Cada propiedad que comienza con el prefijo **gc_** tiene una homóloga con el sufijo **_json** que permite obtener los elementos en el formato en cuestión. Por ejemplo, *'.gc_genesis_json'* devolverá la lista de diccionarios de tags parseados en formato *json*.
+
+**gc_all_json** devuevle los elementos englobados en categorías: *"standard", "universal", "country", "country_unofficial"* y si corresponde: *"genesis", "nes", "snes"*.
 
 ## 🛠️ Módulo *errors*
 Documentación pendiente de confeccionar.
 
 ## ToDo
-- [ ] Revisar y terminar la documentación
-- [ ] Añadir más tags a la detección (quedan pendientes algunos tags específicos de sistema)
-- [ ] Agregar la funcionalidad de forzado, para que la clase se cargue igual aunque el ROM sea uno inválido.
+- [-] Revisar y terminar la documentación
+- [*] Añadir más tags a la detección (quedan pendientes algunos tags específicos de sistema)
+- [ ] Agregar la funcionalidad de forzado para las clases del módulo *ROM*, para que la clase se cargue igual aunque el ROM sea uno inválido.
 
 ## Fuentes
 - **NESDev** https://www.nesdev.org/
@@ -348,7 +444,7 @@ Documentación pendiente de confeccionar.
 - **Plutiedev** https://plutiedev.com/
 - **SegaRetro** https://segaretro.org/
 - **SMSPower** https://www.smspower.org/
-
+- **GameTechWiki** GoodTools https://emulation.gametechwiki.com/index.php/GoodTools
 ## Licencia
 
 Este proyecto está licenciado bajo la **GNU General Public License v3.0**.  

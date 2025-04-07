@@ -15,7 +15,7 @@ tag,re_tag,short_desc,short_desc_spa,long_desc
 (Prototype),"\(Prototype(?:\s-\s[\w\s,\.]+)?\)",Prototype,Prototipo,Prototype version
 (Pre-Release),\(Pre\-Release\),Pre-release,Pre-lanzamiento,Pre-release version
 (Kiosk Demo),\(Kiosk\sDemo\),Demostration,Demostración,Demonstration version available at Kiosks
-(Hack),\([^\(\)]*Hack\),Hack,Hack,ROM hack
+(Hack),\([^)]*Hack\),Hack,Hack,ROM hack
 (Menu),\(Menu\),Multicart uniselectable,Multicartucho no seleccionable,"Multicart menu, unselectable options"
 ZZZ_UNK,ZZZ_UNK,Unclassified,Sin clasificar,Unclassified ROM
 BIOS,BIOS,BIOS,BIOS,Copy of console's basic in/out system

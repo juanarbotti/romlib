@@ -1,25 +1,25 @@
 tag,re_tag,country,country_spa
-(1),\(1\),Japan & Korea ,Japón & Korea
-(4),\(4\),USA & Brazil NTSC ,USA & Brasil NTSC
-(A),\(A\),Australia ,Australia
-(B),\(B\),non USA (Genesis) ,no USA (Genesis)
-(C),\(C\),China ,China
-(D),\(D\),Dutch ,Holanda
-(E),\(E\),Europe ,Europa
-(F),\(F\),France ,Francia
-(FC),\(FC\),French Canadian ,Francés canadiense
-(FN),\(FN\),Finland ,Finlandia
-(G),\(G\),Germany ,Alemania
-(GR),\(GR\),Greece ,Grecia
-(HK),\(HK\),Hong Kong ,Hong Kong
-(J),\(J\),Japan ,Japón
-(K),\(K\),Korea ,Korea
-(NL),\(NL\),Netherlands ,Países Bajos
-(PD),\(PD\),Public Domain ,Dominio Público
-(S),\(S\),Spain ,España
-(Sw),\(Sw\),Sweden ,Suecia
-(U),\(U\),USA ,Estados Unidos
-(UK),\(UK\),England ,Inglaterra
-(Unk),\(Unk\),Unknown Country ,País desconocido
-(I),\(I\),Italy ,Italia
+(1),\(1\),Japan & Korea,Japón & Korea
+(4),\(4\),USA & Brazil NTSC,USA & Brasil NTSC
+(A),\(A\),Australia,Australia
+(B),\(B\),non USA (Genesis),no USA (Genesis)
+(C),\(C\),China,China
+(D),\(D\),Dutch,Holanda
+(E),\(E\),Europe,Europa
+(F),\(F\),France,Francia
+(FC),\(FC\),French Canadian,Francés canadiense
+(FN),\(FN\),Finland,Finlandia
+(G),\(G\),Germany,Alemania
+(GR),\(GR\),Greece,Grecia
+(HK),\(HK\),Hong Kong,Hong Kong
+(J),\(J\),Japan,Japón
+(K),\(K\),Korea,Korea
+(NL),\(NL\),Netherlands,Países Bajos
+(PD),\(PD\),Public Domain,Dominio Público
+(S),\(S\),Spain,España
+(Sw),\(Sw\),Sweden,Suecia
+(U),\(U\),USA,Estados Unidos
+(UK),\(UK\),England,Inglaterra
+(Unk),\(Unk\),Unknown Country,País desconocido
+(I),\(I\),Italy,Italia
 (Unl) ,\(Unl\),Unlicensed ,Sin licencia

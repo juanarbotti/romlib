@@ -1,0 +1,20 @@
+tag,re_tag,short_desc,short_desc_spa,long_desc
+(PC10),\(PC10\),PlayChoice 10,PlayChoice 10,The PlayChoice 10 was an arcade unit which played exact copies of NES games in an arcade cabinet. The machines had a choice of 10 games to choose from and ran for about 3 minutes on 25 cents.
+(VS),\(VS\),Versus System,Versus System,"The Versus system ran on similar hard-ware to the PC10 machines, but simply allowed you to play against each other."
+[hFFE],"\[hF{1,2}E\]  ",Far East Copiers,Copiadora de Oriente,Copied from Far East Copiers
+[hMxx],\[hM[A-Za-z0-9]+\],Hacked mapper,Mappeador hackeado,Hacked to run on mapper xx
+SMB,SMB[A-Za-z0-9]+,SMB hack unspecified,SMB hack no especificado,Unspecified Super Mario Bros. hack
+(Aladdin),\(Aladdin\),Aladdin cartridge,Cartucho Aladdin,Runs with an Aladdin cartridge that locks out 10NES lockout chip
+(Sachen),\(Sachen\),Unlicensed Sachen,Sin licencia Sachen,Unlicensed game by Sachen
+(KC),\(KC\),Konami classic,Konami classic,Konami classic
+(FamiStudio),\(FamiStudio\),FamiStudio ROM,FamiStudio ROM,FamiStudio ROM export (Public Domain) (GoodNES V3.35 update)
+(PRG0),\(PRG0\),Program revision 0,Revisón programa 0,Program revision 0
+(PRG1),\(PRG1\),Program revision 1,Revisión programa 1,Program revision 1
+[FDS],\[FDS\],FCDS file format,Formato de FCDS,Family Computer Disk System file format (GoodNES V3.35 update)
+[FCN],\[FCN\],FCNS,Formato de FCNS,Family Computer Network System file format (GoodNES V3.35 update)
+[U],\[U\],Universal NES,NES universal,Universal NES image file format
+(Mapper),\(Mapper [A-Za-z0-9]+\),Mapper number,Numero de mapper,Mapper number
+(FDS Hack),\(FDS Hack\),Hack FCDS to NES,Hackeado de FCS a NES,Hacked from the Family Computer Disk System to NES
+(GBA E-reader),\(GBA E-reader\),E-Reader card hack,Hack de tarjeta e-Reader,Hacked from the e-Reader card
+(E-GC),\(E-GC\),Ripped from European GC,Extraído GC Europeo,NES ROM ripped from European GameCube
+(J-GC),\(J-GC\),Ripped from Japanese GC,Extraído GC Japones,NES ROM ripped from Japanese GameCube

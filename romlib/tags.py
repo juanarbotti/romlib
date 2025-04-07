@@ -2,6 +2,7 @@ import re
 import csv
 import importlib.resources
 import os
+import json
 
 class Tags:
 
@@ -36,6 +37,14 @@ class Tags:
     # Genesis/Megadrive specific codes
     GC_GENESIS = []
     _gc_genesis_list = []
+
+    # Nintendo Entertainment System specific codes
+    GC_NES = []
+    _gc_nes_list = []
+
+    # Super Nintendo Entertainment System specific codes
+    GC_SNES = []
+    _gc_snes_list = []
 
     # This is an auxilary value comparator for those tags holding values
     # list[touple(start_string,ending_string)]
@@ -76,32 +85,40 @@ class Tags:
         """
 
         # Standard tags
-        with importlib.resources.open_text("romlib.data", "gc_standard.csv") as f:
+        with importlib.resources.open_text("romlib.data", "gc_standard.csv", encoding='utf-8') as f:
             self.GC_STANDARD = list(csv.DictReader(f))
 
         # Translation codes for T+ and T- tags
-        with importlib.resources.open_text("romlib.data", "gc_translations.csv") as f:
+        with importlib.resources.open_text("romlib.data", "gc_translations.csv", encoding='utf-8') as f:
             self.GC_TRANSLATIONS = list(csv.DictReader(f))
 
         # Translation codes for T+ and T- tags
-        with importlib.resources.open_text("romlib.data", "gc_universal.csv") as f:
+        with importlib.resources.open_text("romlib.data", "gc_universal.csv", encoding='utf-8') as f:
             self.GC_UNIVERSAL = list(csv.DictReader(f))
 
         # Standar country codes
-        with importlib.resources.open_text("romlib.data", "gc_country.csv") as f:
+        with importlib.resources.open_text("romlib.data", "gc_country.csv", encoding='utf-8') as f:
             self.GC_COUNTRY = list(csv.DictReader(f))
 
         # Most common country code combinations tags
-        with importlib.resources.open_text("romlib.data", "gc_country_combinations.csv") as f:
+        with importlib.resources.open_text("romlib.data", "gc_country_combinations.csv", encoding='utf-8') as f:
             self.GC_COUNTRY_COMBINATIONS = list(csv.DictReader(f))
         
         # Unoffical country codes tags
-        with importlib.resources.open_text("romlib.data", "gc_country_unofficial.csv") as f:
+        with importlib.resources.open_text("romlib.data", "gc_country_unofficial.csv", encoding='utf-8') as f:
             self.GC_COUNTRY_UNOFFICIAL = list(csv.DictReader(f))
 
         # Genesis/Megadrive specific codes
-        with importlib.resources.open_text("romlib.data", "gc_gen.csv") as f:
+        with importlib.resources.open_text("romlib.data", "gc_gen.csv", encoding='utf-8') as f:
             self.GC_GENESIS = list(csv.DictReader(f))
+
+        # NES specific codes
+        with importlib.resources.open_text("romlib.data", "gc_nes.csv", encoding='utf-8') as f:
+            self.GC_NES = list(csv.DictReader(f))
+        
+        # SNES specific codes
+        with importlib.resources.open_text("romlib.data", "gc_snes.csv", encoding='utf-8') as f:
+            self.GC_SNES = list(csv.DictReader(f))
     
     def _recognize_gc(self, filename):
         """
@@ -130,6 +147,7 @@ class Tags:
                                         "short_desc": item["short_desc"],
                                         "short_desc_spa": item["short_desc_spa"],
                                         "extra_data": extra_data,
+                                        "raw_detection": item_tag
                                     }
                                 )
                         
@@ -142,6 +160,7 @@ class Tags:
                                 "short_desc": item["short_desc"],
                                 "short_desc_spa": item["short_desc_spa"],
                                 "extra_data": None,
+                                "raw_detection": item_tag,
                             }
                         )
         
@@ -175,7 +194,9 @@ class Tags:
                         {
                             "tag": item["tag"],
                             "country": item["country"],
-                            "country_spa": item["country_spa"]
+                            "country_spa": item["country_spa"],
+                            "preferred": "not apply",
+                            "raw_detection": item_tag
                         }
                     )
 
@@ -188,7 +209,9 @@ class Tags:
                         {
                             "tag": item["tag"],
                             "country": item["country"],
-                            "country_spa": item["country_spa"]
+                            "country_spa": item["country_spa"],
+                            "preferred": "not apply",
+                            "raw_detection": item_tag
                         }
                     )
 
@@ -202,12 +225,13 @@ class Tags:
                             "tag": item["tag"],
                             "country": item["country"],
                             "country_spa": item["country_spa"],
-                            "preferred": eval(item["preferred"])
+                            "preferred": eval(item["preferred"]),
+                            "raw_detection": item_tag
                         }
                     )
 
         # Sega Genesis/Megadrive codes
-        if self._rom_type == "Mega Drive" or self._rom_type == None:
+        if self._rom_type == "SMD" or self._rom_type == None:
             for item in self.GC_GENESIS:
                 if item["re_tag"]:
                     pattern_tag = re.findall(item["re_tag"], filename)
@@ -215,10 +239,53 @@ class Tags:
                         self._gc_genesis_list.append(
                             {
                                 "tag": item["tag"],
+                                "value": None,
                                 "short_desc": item["short_desc"],
-                                "short_desc_spa": item["short_desc_spa"]
+                                "short_desc_spa": item["short_desc_spa"],
+                                "extra_data": None,
+                                "raw_detection": item_tag
                             }
                         )
+
+        # Sega Genesis/Megadrive codes
+        if self._rom_type == "NES" or self._rom_type == None:
+            for item in self.GC_NES:
+                if item["re_tag"]:
+                    pattern_tag = re.findall(item["re_tag"], filename)
+                    for item_tag in pattern_tag:
+                        to_store = {
+                            "tag": item["tag"],
+                            "value": None,
+                            "short_desc": item["short_desc"],
+                            "short_desc_spa": item["short_desc_spa"],
+                            "extra_data": None,
+                            "raw_detection": item_tag
+                        }
+                        if item["tag"] == "SMB":
+                            to_store["value"] = item_tag[3:]
+                        elif item["tag"] == "[hMxx]":
+                            to_store["value"] = item_tag[2:-1]
+                        elif item["tag"] == "(Mapper)":
+                            to_store["value"] = item_tag[7:-1]
+                        else:
+                            value = item_tag if item["tag"] != item_tag else None
+                        self._gc_nes_list.append(to_store)
+
+        # Sega Genesis/Megadrive codes
+        if self._rom_type == "SNES" or self._rom_type == None:
+            for item in self.GC_SNES:
+                if item["re_tag"]:
+                    pattern_tag = re.findall(item["re_tag"], filename)
+                    for item_tag in pattern_tag:
+                        to_store = {
+                            "tag": item["tag"],
+                            "value": None,
+                            "short_desc": item["short_desc"],
+                            "short_desc_spa": item["short_desc_spa"],
+                            "extra_data": None,
+                            "raw_detection": item_tag
+                        }
+                        self._gc_snes_list.append(to_store)
 
     def _clear(self):
         self._gc_standard_list = []
@@ -228,6 +295,8 @@ class Tags:
         self._gc_country_combinations_list = []
         self._gc_country_unofficial_list = []
         self._gc_genesis_list = []
+        self._gc_nes_list = []
+        self._gc_snes_list = []
 
     def load(self, filename, rom_type=None):
         """
@@ -246,7 +315,7 @@ class Tags:
         self._rom_type = rom_type
         base_name = os.path.basename(filename)
 
-        self._recognize_gc(base_name, rom_type=rom_type)
+        self._recognize_gc(base_name)
 
     def clear(self):
         """
@@ -303,6 +372,10 @@ class Tags:
         return self._gc_standard_list
     
     @property
+    def gc_standar_json(self):
+        return json.dumps(self._gc_standard_list, indent=4)
+    
+    @property
     def gc_universal(self):
         """
         List universal tags and their short descriptions.
@@ -312,6 +385,10 @@ class Tags:
 
         """
         return self._gc_universal_list
+    
+    @property
+    def gc_universal_json(self):
+        return json.dumps(self._gc_universal_list, indent=4)
 
     @property
     def gc_country(self):
@@ -325,6 +402,10 @@ class Tags:
         return self._gc_country_list + self._gc_country_combinations_list
     
     @property
+    def gc_country_json(self):
+        return json.dumps(self._gc_country_list + self._gc_country_combinations_list, indent=4)
+    
+    @property
     def gc_country_unofficial(self):
         """
         List all country unofficial tags and its short description.
@@ -336,6 +417,10 @@ class Tags:
         return self._gc_country_unofficial_list
     
     @property
+    def gc_country_unoficial_json(self):
+        return json.dumps(self._gc_country_unofficial_list, indent=4)
+    
+    @property
     def gc_genesis(self):
         """
         List all Sega Genesis/Megadrive tags and its short description.
@@ -345,6 +430,40 @@ class Tags:
 
         """
         return self._gc_genesis_list
+    
+    @property
+    def gc_genesis_list_json(self):
+        return json.dumps(self._gc_genesis_list, indent=4)
+
+    @property
+    def gc_nes(self):
+        """
+        List all Nintendo Entertainment System tags and its short description.
+
+        Returns:
+            list[dict]: A list of dictionaries containing tag and its short description, if available.
+
+        """
+        return self._gc_nes_list
+    
+    @property
+    def gc_nes_list_json(self):
+        return json.dumps(self._gc_nes_list, indent=4)
+    
+    @property
+    def gc_snes(self):
+        """
+        List all Super Nintendo Entertainment System tags and its short description.
+
+        Returns:
+            list[dict]: A list of dictionaries containing tag and its short description, if available.
+
+        """
+        return self._gc_genesis_list
+    
+    @property
+    def gc_snes_list_json(self):
+        return json.dumps(self._gc_snes_list, indent=4)
 
     @property
     def gc_all(self):
@@ -355,26 +474,32 @@ class Tags:
             list[dict]: A list of dictionaries containing a tag and its short description, if available.
 
         """
-        return self._gc_standard_list + self._gc_country_list + self._gc_country_combinations_list + self._gc_genesis_list
+        return self._gc_standard_list + self._gc_universal_list +\
+              self._gc_country_list + self._gc_country_combinations_list +\
+                  self._gc_country_unofficial_list + self._gc_genesis_list
     
     @property
-    def full_filename(self):
+    def gc_all_json(self):
+        
+        r_var = {
+            "standard": self._gc_standard_list,
+            "universal": self._gc_universal_list,
+            "country": self._gc_country_list + self._gc_country_combinations_list,
+            "country_unofficial": self._gc_country_unofficial_list,
+        }
+
+        if self._gc_genesis_list != []:
+            r_var["genesis"] = self._gc_genesis_list
+        if self._gc_nes_list != []:
+            r_var["nes"] = self._gc_nes_list
+        if self._gc_snes_list != []:
+            r_var["snes"] = self._gc_snes_list
+
+        return json.dumps(r_var, indent=4, ensure_ascii=False)
+           
+    @property
+    def filename(self):
         return self._full_filename
-    
-    @property
-    def file_name(self):
-        return os.path.basename(self._full_filename)
-
-    @property
-    def file_extension(self):
-        """
-        Returns the file extension, if exists in original filename.
-
-        Returns:
-            str: Filename extension.
-        """
-        _, extension = os.path.splitext(self._full_filename)
-        return extension
     
     @property
     def rom_name(self):
@@ -384,8 +509,6 @@ class Tags:
         Returns:
             str: ROM name without tags or extension.
         """
-        
-
         filename, _ = os.path.splitext(self._full_filename)
         filename = os.path.basename(filename)
         clean_name = re.sub(r'\s*[(\[].*?[)\]]', '', filename).strip()
