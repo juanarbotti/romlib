@@ -1,10 +1,28 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "ROMLib"
 version = "0.1"
-description = "Librería para gestionar ROMs"
-authors = [{name = "Juan Arbotti"}]
-dependencies = []
+description = "Librería para gestionar ROMs de 8 y 16 bits (SMD, SNES, SMS, NES)"
+readme = "README.md"
+authors = [{ name = "Juan Arbotti", email = "juanarbotti@gmail.com" }]
+license = { text = "GPL-3.0-only" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = [
+    "py7zr==0.22.0",
+]
+
+[tool.setuptools.package-data]
+"romlib.data" = ["*.csv"]
+
+[project.urls]
+Homepage = "https://github.com/juanarbotti/romlib"
+Repository = "https://github.com/juanarbotti/romlib"
+Issues = "https://github.com/juanarbotti/romlib/issues"

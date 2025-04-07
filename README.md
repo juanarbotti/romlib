@@ -434,8 +434,8 @@ Cada propiedad que comienza con el prefijo **gc_** tiene una homóloga con el su
 Documentación pendiente de confeccionar.
 
 ## ToDo
-- [-] Revisar y terminar la documentación
-- [*] Añadir más tags a la detección (quedan pendientes algunos tags específicos de sistema)
+- [ ] Terminar la documentación
+- [X] Añadir más tags a la detección (quedan pendientes algunos tags específicos de sistema)
 - [ ] Agregar la funcionalidad de forzado para las clases del módulo *ROM*, para que la clase se cargue igual aunque el ROM sea uno inválido.
 
 ## Fuentes

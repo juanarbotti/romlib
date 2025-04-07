@@ -515,3 +515,16 @@ class Tags:
 
         return clean_name
         
+
+# Available elements to be imported
+__all__ = ["Tags"]
+
+# Only show available
+def __dir__():
+    return __all__
+
+# Rasie an error if someone wants to import dependencies
+def __getattr__(name):
+    if name not in __all__:
+        raise AttributeError(f"Module 'romlib.roms' has no attribute '{name}'")
+    return globals()[name]

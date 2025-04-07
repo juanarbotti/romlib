@@ -8,7 +8,8 @@ import time
 import json
 from hashlib import sha3_256
 
-from .errors import *
+from . import errors
+
 
 class ROM:
 
@@ -169,7 +170,7 @@ class ROM_SMS(ROM):
             # Inexistent header. Old games, like SG, sometimes does not have headers
             if self._header_position == None:
                 self._clear()
-                raise InvalidROMFile(f"File {full_path} is proably an old SMS ROM or not a SMS ROM or maybe file is corrupted.")
+                raise errors.InvalidROMFile(f"File {full_path} is proably an old SMS ROM or not a SMS ROM or maybe file is corrupted.")
             else:
                 self._data = data # Header present, load the 16 bytes read
                 self._full_path = full_path # Sets the full path file
@@ -292,8 +293,6 @@ class ROM_SMS(ROM):
         self._cm_checksum = None # stores checksum on load
         self._cm_inverse_checksum = None # stores inverse checsum on load
 
-
-
     def _bcd_to_decimal(self, bcd_byte):
         """Converts BCD into decimal."""
         return ((bcd_byte >> 4) * 10) + (bcd_byte & 0x0F)
@@ -412,7 +411,7 @@ class ROM_SMD(ROM):
 
         if data[0:4].decode("ascii") != "SEGA":
             self._clear()
-            raise InvalidROMFile(f"File {full_path} is proably not a {self._system_type} ROM or file is corrupted.")
+            raise errors.InvalidROMFile(f"File {full_path} is proably not a {self._system_type} ROM or file is corrupted.")
 
         self._data = data
         self._full_path = full_path
@@ -669,7 +668,7 @@ class ROM_NES(ROM):
 
         if not data[0:4] == b'NES\x1a':
             self._clear()
-            raise InvalidROMFile(f"File {full_path} is proably not a NES ROM or file is corrupted.")
+            raise errors.InvalidROMFile(f"File {full_path} is proably not a NES ROM or file is corrupted.")
         
         self._data = data
         self._full_path = full_path
@@ -678,7 +677,7 @@ class ROM_NES(ROM):
     def pretty_data(self):
 
         if not self._full_path:
-            raise NoROMLoaded("No ROM was loaded.")
+            raise errors.NoROMLoaded("No ROM was loaded.")
 
         pretty_data = {
             "loaded_class": "NES",
@@ -972,7 +971,7 @@ class ROM_SNES(ROM):
         
         if result == None:
             self._clear()
-            raise InvalidROMFile(f"File {full_path} is proably not a {self._system_type} ROM or file is corrupted.")
+            raise errors.InvalidROMFile(f"File {full_path} is proably not a {self._system_type} ROM or file is corrupted.")
         
         self._data = self._dumper_header if self._dumper_header else bytes(0) + self._expanded_header + self._cart_header
         self._full_path = full_path
@@ -1190,7 +1189,7 @@ class ROMDetector:
         elif rom_type == "SNES":
             return ROM_SNES(full_path)
 
-        raise UnsupportedROMError(f"ROM type not supported.")
+        raise errors.UnsupportedROMError(f"ROM type not supported.")
         
     @staticmethod
     def detectType(full_path):
@@ -1276,7 +1275,7 @@ class ROMcompressed:
         # Check if file is format supported
         self._check_compressed_type(full_path)
         if self._file_type not in ["zip", "7z"]:
-            raise FileFormatNotSupported("File is not zip or 7z format.")
+            raise errors.FileFormatNotSupported("File is not zip or 7z format.")
 
         # Generates list
         raw_file_list = []
@@ -1389,7 +1388,7 @@ class ROMcompressed:
         """
 
         if file_format not in ["zip", "7z"]:
-            raise FileCompressionFormatNotSupported("Unsopported compression format, only 'zip' or '7z' is allowed.")
+            raise errors.FileCompressionFormatNotSupported("Unsopported compression format, only 'zip' or '7z' is allowed.")
 
         file_list = [str(archivo) for archivo in Path(full_path).rglob('*') if archivo.is_file()]
 
@@ -1431,9 +1430,9 @@ class ROMcompressed:
         """
 
         if not os.path.exists(directory_src):
-            raise DirectoryNotFound("Source directory not found.")
+            raise errors.DirectoryNotFound("Source directory not found.")
         if not os.path.exists(directory_dest):
-            raise DirectoryNotFound("Destination directory not found.")
+            raise errors.DirectoryNotFound("Destination directory not found.")
 
         file_list = [str(file) for file in Path(directory_src).rglob('*') if file.is_file()]
 
@@ -1556,8 +1555,22 @@ class ROMcompressed:
             for check_file in compressed_file_list:
                 full_check_path = os.path.join(file_dir,check_file)
                 if not os.path.exists(full_check_path):
-                    raise DecompressionFailure("Failed decompression for ", file_path)
+                    raise errors.DecompressionFailure("Failed decompression for ", file_path)
             
             if delete_original:
                 # If everything went ok, removes original zip file
                 os.remove(file_path)
+
+
+# Available elements to be imported
+__all__ = ["ROMcompressed", "ROMDetector", "ROM_SMD", "ROM_SMS", "ROM_NES", "ROM_SNES"]
+
+# Only show available
+def __dir__():
+    return __all__
+
+# Rasie an error if someone wants to import dependencies
+def __getattr__(name):
+    if name not in __all__:
+        raise AttributeError(f"Module 'romlib.roms' has no attribute '{name}'")
+    return globals()[name]

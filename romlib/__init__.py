@@ -14,13 +14,15 @@
 # Deberías haber recibido una copia de la Licencia Pública General de GNU
 # junto con este programa. Si no, consulta <https://www.gnu.org/licenses/>.
 
-from .errors import *
-from .tags import Tags
-from .roms import \
-    ROMDetector,\
-    ROM,\
-    ROM_SMD,\
-    ROM_SMS,\
-    ROM_NES,\
-    ROM_SNES,\
-    ROMcompressed
+
+from . import errors, tags, roms
+
+__all__ = ["errors", "tags", "roms"]
+
+def __dir__():
+    return __all__
+
+def __getattr__(name):
+    if name not in __all__:
+        raise AttributeError(f"Module 'romlib' has no attribute '{name}'")
+    return globals()[name]

@@ -4,8 +4,9 @@ venv/
 config.json
 
 # Ignorar caché de Python
+.pytest_cache
 __pycache__/
-*.pyc
+*.py[cod]
 
 # Ignorar carpetas de IDEs como VSCode y JetBrains
 .vscode/
@@ -13,3 +14,7 @@ __pycache__/
 # Proopios
 tests/
 run.py
+
+# Archivos de instalación editable
+*egg-info/
+dist/
