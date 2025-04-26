@@ -22,3 +22,11 @@ class InvalidROMFile(Exception):
 class NoROMLoaded(Exception):
     """Raised when a ROM is not loaded in a class"""
     pass
+
+class FilesizeSmallerThanLenghts(Exception):
+    """Raised when filesize is smaller than the bytes required for analyze."""
+    pass
+
+class ElementNotFound(Exception):
+    """Raised when something is not found in the database."""
+    pass

@@ -17,7 +17,7 @@
 
 from . import errors, tags, roms
 
-__all__ = ["errors", "tags", "roms"]
+__all__ = ["errors", "tags", "roms", "db"]
 
 def __dir__():
     return __all__

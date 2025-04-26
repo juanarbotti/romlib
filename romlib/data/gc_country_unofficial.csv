@@ -50,6 +50,7 @@ tag,re_tag,country,country_spa,preferred
 (Se),\(Se\),Sweeden,Suecia,True
 (Taiwan),\(Taiwan\),Taiwan,Taiwan,False
 (Tw),\(Tw\),Taiwan,Taiwan,False
+(T),\(T\),Taiwan,Taiwan,False
 (USA),\(USA\),USA,USA,False
 (US),\(US\),USA,USA,True
 (United Kingdom),\(United Kingdom\),United Kingdom,Reino Unido,False

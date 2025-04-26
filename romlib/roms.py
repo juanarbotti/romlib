@@ -67,10 +67,12 @@ class ROM:
     def get_sha3(self, full_path=None):
         file_objective = self._full_path if not full_path else full_path
         hasher = sha3_256()
-        
-        with open(file_objective, "rb") as f:
-            while chunk := f.read(4096):  # Leer en bloques de 4KB
-                hasher.update(chunk)
+        try:
+            with open(file_objective, "rb") as f:
+                while chunk := f.read(4096):  # Leer en bloques de 4KB
+                    hasher.update(chunk)
+        except:
+            return
         
         return hasher.hexdigest()
 
@@ -409,10 +411,15 @@ class ROM_SMD(ROM):
             f.seek(0x100)
             data = f.read(256)
 
-        if data[0:4].decode("ascii") != "SEGA":
+        invalid_rom_error =  errors.InvalidROMFile(f"File {full_path} is proably not a {self._system_type} ROM or file is corrupted.")
+        try:
+            if data[0:4].decode("ascii") != "SEGA":
+                self._clear()
+                raise invalid_rom_error
+        except:
             self._clear()
-            raise errors.InvalidROMFile(f"File {full_path} is proably not a {self._system_type} ROM or file is corrupted.")
-
+            raise invalid_rom_error
+    
         self._data = data
         self._full_path = full_path
 
@@ -1233,9 +1240,9 @@ class ROMDetector:
         # as it will do the complex procedure of detection.
         if rom_type == None:
             try:
-                rsnes = ROM_SNES(full_path)
+                _ = ROM_SNES(full_path)
                 rom_type = "SNES"
-            except NoROMLoaded:
+            except errors.InvalidROMFile:
                 pass
 
         # If ROM header method fails, then tries to guess from its extension
@@ -1244,7 +1251,7 @@ class ROMDetector:
             for key, items in ROMDetector.ROM_EXTENSIONS.items():
                 if extension in items:
                     return key
-        
+
         return rom_type
 
 class ROMcompressed:

@@ -26,7 +26,7 @@ Contiene clases para la manipulación de diferentes tipos de ROMs:
 Se usa para autodetectar e instanciar la clase correspondiente.
 
 #### .detectType()
-Detecta el tipo de ROM y lo devuelve en formato string.
+Detecta el tipo de ROM y lo devuelve en formato string. Si no detecta una ROM válida, retorna *None*.
 
 ```python
 from romlib.roms import ROMDetector
@@ -38,7 +38,7 @@ print(romType)
 
 ```
 #### .load()
-Detecta el tipo de ROM y devuelve una instancia de su clase correspondiente
+Detecta el tipo de ROM y devuelve una instancia de su clase correspondiente. Si el archivo no corresponde a una ROM soportada, retorna un objeto genérico ROM. Si el objeto es genérico (*ROM*), al ver su propiedad **.system_type**, el valor será *None*, siendo esto particularmente útil y necesario para la detección de objetos por otras clases.
 
 ```python
 
@@ -195,6 +195,14 @@ Clase común a todos los ROMs. Todos los ROMs comparten sus propiedades y sus m�
 #### .load()
 Este método carga una ROM e inmeditamente la analiza buscando la información en bruto.
 - **full_path** (str): ruta a la ROM que se va a cargar.
+
+#### .advanced_text_decode()
+Intenta detectar la codificación de un texto y lo devuelve en su forma legible (str).
+- **data** (str): el texto en cuestión.
+
+#### get_sha3()
+Devuelve el hash SHA-3 256 de un archivo (str). Si *full_path* no es especificado, emplea el archivo de ROM cargado.
+- **full_path** (str): la ruta al archivo.
 
 #### *.full_path*
 Devuelve la ruta (str) del archivo de ROM cargado.

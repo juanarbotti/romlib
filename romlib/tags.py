@@ -3,6 +3,14 @@ import csv
 import importlib.resources
 import os
 import json
+import Levenshtein
+import difflib
+from collections import defaultdict
+
+import pandas as pd
+from rapidfuzz import fuzz
+
+from .errors import FilesizeSmallerThanLenghts
 
 class Tags:
 
@@ -288,6 +296,7 @@ class Tags:
                         self._gc_snes_list.append(to_store)
 
     def _clear(self):
+        self._full_filename = None
         self._gc_standard_list = []
         self._gc_translations_list = []
         self._gc_universal_list = []
@@ -372,7 +381,7 @@ class Tags:
         return self._gc_standard_list
     
     @property
-    def gc_standar_json(self):
+    def gc_standard_json(self):
         return json.dumps(self._gc_standard_list, indent=4)
     
     @property
@@ -496,7 +505,22 @@ class Tags:
             r_var["snes"] = self._gc_snes_list
 
         return json.dumps(r_var, indent=4, ensure_ascii=False)
-           
+    
+    @property
+    def rom_type(self):
+        """Returns ROM system type str (SMD, NES, SMS, SNES)"""
+        return self._rom_type
+    
+    @property
+    def tags_found(self):
+
+        list_items = []
+
+        for item in self.gc_all:
+            tag = item.get("tag")
+            list_items.append(tag)
+        return list_items
+        
     @property
     def filename(self):
         return self._full_filename
@@ -509,15 +533,288 @@ class Tags:
         Returns:
             str: ROM name without tags or extension.
         """
-        filename, _ = os.path.splitext(self._full_filename)
-        filename = os.path.basename(filename)
-        clean_name = re.sub(r'\s*[(\[].*?[)\]]', '', filename).strip()
-
-        return clean_name
+        return Semantics.remove_tags(self._full_filename)
         
 
+class Semantics:
+
+    @staticmethod
+    def remove_tags(rom_name):
+        """
+        Returns clean ROM name without tags
+        Returns:
+            str: ROM name without tags or extension.
+        """
+        filename, _ = os.path.splitext(rom_name)
+        filename = os.path.basename(filename)
+        clean_name = re.sub(r'\s*[(\[].*?[)\]]', '', filename).strip()
+        return clean_name
+    
+    @staticmethod
+    def rom_normalize(rom_name):
+        """
+        Returns the clean name without tags, lowercase and without underscores or multiple spaces.
+        Args:
+            rom_name (str): a ROM name.
+        """
+        # First, applies tags remover
+        rom_name = Semantics.remove_tags(rom_name)
+
+        # Removes -, _ and multiple spaces
+        rom_name = re.sub(r'[_\-]+', ' ', rom_name).strip() 
+        rom_name = re.sub(r'\s+', ' ', rom_name)
+        
+        # Lower and return
+        return rom_name.lower()
+        
+    @staticmethod
+    def generate_blueprint(rom_path, lengths=[64, 64,64,64]):
+        """
+        Evaluates a file and returns its bytes given from parts of the file as a string sequence. The result is a 'blueprint' like string of a file.
+        
+        Args:
+            rom_path (str): file full path.
+            lenghts[int]: at least 2 bytes chunks must be specified (begining and end of the file). More chunks will be taken from differnt and equidistant part of the file.
+
+        Returns:
+            (str): hex bytes in format "bbb-bbb-bbb..."
+        """
+
+        
+        if len(lengths) < 2:
+            raise ValueError("You must provide at least 2 lengths (start length and end lenght)")
+        
+        # get file size
+        file_size = os.path.getsize(rom_path)
+        
+        if sum(lengths) > file_size:
+            raise FilesizeSmallerThanLenghts("The filesize is smaller than the bytes needed to analyze it.") 
+
+        # divide file size by 4 to get positions
+        step = file_size // len(lengths)
+
+        with open(rom_path, "rb") as f:
+            fragments = []
+            for i, length in enumerate(lengths):
+                # goes to positions set in lenght. 
+                position = min(step * i, file_size-length)
+                f.seek(position)
+                fragment = f.read(length).hex()
+                fragments.append(fragment)
+
+            return "-".join(fragments)
+    
+    @staticmethod
+    def get_similarity_ratio(value_a: str, value_b: str) -> float:
+        """
+        Returns a similarity ratio between string A and string B.
+        Actual method: Levenshtein corrected (fuzz)
+        Args:
+            value_a: first string to compare
+            value_b: second string to compare
+        Returns:
+            (float) : similatrity ratio
+        """
+
+        ratio = fuzz.ratio(value_a, value_b) / 100
+        return round(ratio,2)
+
+    @staticmethod
+    def file_compare_binary(rom_path_a: str, rom_path_b: str) -> float:
+        """
+        Compare 2 ROM files at byte level. Returns the rate of similarity calculated by this method.
+        Args:
+            rom_path_a = first ROM to compare
+            rom_path_b = second ROM to compare
+        
+        Returns:
+            (float): rate of similarity
+        """
+
+        file_1_str = Semantics.generate_blueprint(rom_path_a)
+        file_2_str = Semantics.generate_blueprint(rom_path_b)
+
+        return Semantics.get_similarity_ratio(file_1_str, file_2_str)
+
+
+class Categories:
+    
+    @staticmethod
+    def get_masters(rom_directory, with_full_path=True):
+        """
+        Selects the best ROMs among other ROMs probaly being same games. This is equal to get the unieque games.
+
+        Args:
+            rom_directory (str): path where ROMs are stored.
+            with_full_path (bool): if the items contained in resulting list should be with its full path or just the filename.
+
+        Returns:
+            (list) : the master games.
+        """
+        rom_files = set(os.listdir(rom_directory))
+
+        header_files = []
+
+        for file in rom_files:
+            if "[!]" in file:
+                header_files.append(file)
+
+
+        rom_files = rom_files - set(header_files)
+
+        for file_a in rom_files:
+            
+            file_a_rtags = Semantics.remove_tags(file_a)
+
+            store_equal = [file_a]
+
+            # Get similar names for file_a
+            for file_b in rom_files:
+                file_b_rtags = Semantics.remove_tags(file_b)
+                if file_a != file_b:
+                    similar_name_rate = Semantics.get_similarity_ratio(file_a_rtags, file_b_rtags)
+                    if similar_name_rate > 95:
+                        store_equal.append(file_b)
+
+            clsTags = Tags()
+            selected = None
+            min_tags = float("inf")  # Inicializamos con un valor alto
+            min_length = float("inf")
+
+            # Determinar el mejor candidato
+            for item in store_equal:
+                clsTags.load(item)
+                num_tags = len(clsTags.gc_all)
+                file_length = len(item)
+
+                # Primero elegimos el que tenga menos tags
+                if num_tags < min_tags:
+                    min_tags = num_tags
+                    min_length = file_length
+                    selected = item
+
+                # Si tienen la misma cantidad de tags, elegimos el nombre más corto
+                elif num_tags == min_tags and file_length < min_length:
+                    min_length = file_length
+                    selected = item
+
+            header_files.append(selected if not with_full_path else os.path.join(rom_directory, selected))
+        
+        return header_files
+
+    @staticmethod
+    def get_slaves(master_full_path, roms_full_path):
+
+        # Get ROMs list
+        roms_list = os.listdir(roms_full_path)
+        
+        # Calculate blueprint from master and get master base name 
+        try:
+            master_blueprint = Semantics.generate_blueprint(master_full_path)
+        except:
+            master_blueprint = None
+
+        master = os.path.basename(master_full_path)
+
+        # Storages
+        slaves = []
+
+        # Loop over rom list
+        for slave in roms_list:
+
+            # Get slave full path
+            slave_full_path = os.path.join(roms_full_path, slave)
+            
+            # omit master itself
+            if slave != master:
+
+                # First, compare filename
+                try:
+                    ratio_filename = Semantics.get_similarity_ratio(master, slave)
+                except:
+                    ratio_filename = 0.0
+                if ratio_filename > 0.9:
+                    # stop program, files probably belongs to a collection
+                    slaves.append(slave)
+                else:
+
+                    if master_blueprint == None:
+                        continue
+
+                    # File was not similar to any name in collection, so now it will look at byte level
+                    try:
+                        slave_blueprint = Semantics.generate_blueprint(slave_full_path)
+                    except:
+                        continue
+
+                    ratio_blueprints = Semantics.get_similarity_ratio(master_blueprint, slave_blueprint)
+                    if ratio_blueprints > 0.85 and ratio_filename > 0.75:
+                        slaves.append(slave)
+
+        return slaves
+
+    @staticmethod
+    def group_roms(rom_directory):
+
+        # List files
+        rom_files = os.listdir(rom_directory)
+
+        # A list for blueprints ok
+        blueprints_str = []
+        # A list for orphans
+        orphans = []
+
+        # Generates blueprints
+        for rom in rom_files:
+            full_path_rom = os.path.join(rom_directory, rom)
+            try:
+                blueprints_str.append((rom, Semantics._generate_eval_string(full_path_rom,[64,64,64,64])))
+            except FilesizeSmallerThanLenghts:
+                orphans.append(rom)
+
+        groups = {}
+        for rom_file, blueprint in blueprints_str:
+
+            data = None
+
+            # remove tags from filneame
+            clean_rom_file = Semantics.remove_tags(rom_file)
+            
+            # compares filename
+            for key, items in groups.items():
+                similar_name_rate = max([
+                    fuzz.ratio(clean_rom_file, Semantics.remove_tags(rf))
+                    for i, rf in enumerate(items["slaves"])
+                    if items["sim_rate"][i][0] != "F"  # Exclude those introduced by blueprint, to avoid beeing greedy
+                ])
+                if similar_name_rate > 95:
+                    data = ("N",round(similar_name_rate,2))
+                    break
+            
+            # If no filename comparison was positive, then checks the file blueprint
+            if data == None:
+                # compares file blueprint
+                for key, items in groups.items():
+                    similar_file_rate = max([fuzz.ratio(bp, blueprint) for bp in items["blueprints"]])
+                    if similar_file_rate > 85:
+                        data = ("F",round(similar_file_rate,2))
+                        break
+
+            if data:
+                items["slaves"].append(rom_file)
+                items["blueprints"].append(blueprint)  # Guardar más de un blueprint para mejor comparación
+                items["sim_rate"].append(data)
+            else:
+                groups[rom_file] = {"blueprints": [blueprint], "slaves": [rom_file], "sim_rate": [(1.0, "MASTER")]}
+                        
+        if orphans:
+            groups["orphans"] = {"blueprints": None, "slaves": orphans, "sim_rate": ()}
+
+        return groups
+
+        
 # Available elements to be imported
-__all__ = ["Tags"]
+__all__ = ["Tags", "Semantics", "Categories"]
 
 # Only show available
 def __dir__():
@@ -526,5 +823,5 @@ def __dir__():
 # Rasie an error if someone wants to import dependencies
 def __getattr__(name):
     if name not in __all__:
-        raise AttributeError(f"Module 'romlib.roms' has no attribute '{name}'")
+        raise AttributeError(f"Module 'romlib.tags' has no attribute '{name}'")
     return globals()[name]

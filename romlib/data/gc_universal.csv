@@ -12,7 +12,7 @@ tag,re_tag,short_desc,short_desc_spa,long_desc
 [M],\[M\],Mono-color,Mono-color,Mono-color game
 (Alpha),"\(Alpha ?[0-9]{0,2}\)",Alpha,Alfa,Alpha version
 (Beta),"\(Beta ?[0-9]{0,2}\)",Beta,Beta,Beta version
-(Prototype),"\(Prototype(?:\s-\s[\w\s,\.]+)?\)",Prototype,Prototipo,Prototype version
+(Prototype),"\(Prototype(.*?)\)",Prototype,Prototipo,Prototype version
 (Pre-Release),\(Pre\-Release\),Pre-release,Pre-lanzamiento,Pre-release version
 (Kiosk Demo),\(Kiosk\sDemo\),Demostration,Demostración,Demonstration version available at Kiosks
 (Hack),\([^)]*Hack\),Hack,Hack,ROM hack
@@ -44,3 +44,4 @@ BIOS,BIOS,BIOS,BIOS,Copy of console's basic in/out system
 (PAL),\(PAL\),PAL region,Región PAL,"PAL regions (Australia, Europe)"
 (NTSC),\(NTSC\),NTSC region,Región NTSC,"NTSC regions (Japan, USA, Latin America)"
 (RU),\(RU\),Soviet Union Dendy’s region,Región de Dendy de Unión Soviética,Dendy regions (Soviet Union) (GoodNES only) (GoodNES V3.35 update)
+(Demo),\(Demo\),Demo,Demo,Demo

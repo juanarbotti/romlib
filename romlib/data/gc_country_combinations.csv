@@ -11,5 +11,13 @@ tag,re_tag,country,country_spa
 (EU),\(EU\),"USA, Europe","USA, Europa"
 (JE),\(JE\),"Japan, Europe","Japón, Europa"
 (EJ),\(EJ\),"Japan, Europe","Japón, Europa"
-(UEBK),\(UEBK\),"USA, Europe, Brazil, Korea","USA, Europa, Brazil, Corea"
-(UEB),\(UEB\),"USA, Europe, Brazil","USA, Europa, Brazil"
+(UEBK),\(UEBK\),"USA, Europe, Brazil, Korea","USA, Europa, Brasil, Corea"
+(UEB),\(UEB\),"USA, Europe, Brazil","USA, Europa, Brasil",
+(EB),\(EB\),"Europe, Brazil","Europa, Brasil"
+(JUEB),\(JUEB\),"Japan, USA, Europe, Brazil","Japón, USA, Europa, Brasil"
+(UJEB),\(UJEB\),"Japan, USA, Europe, Brazil","Japón, USA, Europa, Brasil"
+(UEK),\(UEK\),"USA, Europe, Korea","Japón, Europa, Corea",
+(JK),\(JK\),"Japan, Korea","Japón, Corea",
+(JUB),\(JUB\),"Japan, USA, Brazil","Japón, USA, Brasil"
+(JT),\(JT\),"Japan, Taiwan","Japón, Taiwan"
+(UB),\(UB\),"USA, Brazil","USA, Brasil"

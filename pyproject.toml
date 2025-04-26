@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ROMLib"
-version = "0.1"
+version = "0.1.1"
 description = "Librería para gestionar ROMs de 8 y 16 bits (SMD, SNES, SMS, NES)"
 readme = "README.md"
 authors = [{ name = "Juan Arbotti", email = "juanarbotti@gmail.com" }]
